@@ -23,6 +23,7 @@ int philo_init(t_data *data)
         data->p[i].data = data;
         data->p[i].nbr = i;
         pthread_mutex_init(&data->p[i].fork, NULL);
+        //pthread_mutex_init(&data->p[i].eat, NULL);
 		pthread_create(&data->p[i].philo, NULL, &philosopher, &data->p[i]);
     }
 	i = -1;
@@ -35,7 +36,7 @@ int data_init(t_data *data, char **av)
 {
     int i;
     i = -1;
- 
+
     data->nbr_of_philo = ft_atoi(av[1]);
 	data->time_to_die = ft_atoi(av[2]);
 	data->time_to_eat = ft_atoi(av[3]);
@@ -45,7 +46,7 @@ int data_init(t_data *data, char **av)
 	if (av[5])
 		data->nbr_must_eat = ft_atoi(av[5]);
 	else
-		data->nbr_must_eat = 1;
+		data->nbr_must_eat = -1;
 	if (philo_init(data))
 		return (1);
 	return (0);
