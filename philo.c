@@ -6,10 +6,10 @@ void eating(t_philo *philo)
     philo->death_time = get_time() + philo->data->time_to_die;
     pthread_mutex_unlock(&philo->eat);
     print(*philo, "is\teating");
-    usleep((philo->data->time_to_eat * 1000));
     philo->nbr_eat++;
     if (philo->nbr_eat == philo->data->nbr_must_eat)
         philo->data->finish_eat++;
+    usleep((philo->data->time_to_eat * 1000));
 }
 
 void taken_a_fork(t_philo *philo)
@@ -38,10 +38,15 @@ void *death_fnc(void *p)
     t_philo *philo;
 
     philo = p;
-    while (get_time() < philo->death_time)
+    
+    while (1)
     {
+        pthread_mutex_lock(&philo->eat);
+        if (get_time() < philo->death_time)
+             pthread_mutex_unlock(&philo->eat);
+        else
+            break ;
     }
-    pthread_mutex_lock(&philo->eat);
     print(*philo, "is\tdeath");
     philo->data->death = 1;
     return (NULL);
@@ -53,8 +58,7 @@ void    *philosopher(void *p)
     pthread_t death;
 
     philo = p;
-    philo->start_time = get_time();
-	philo->death_time = philo->start_time + philo->data->time_to_die;
+	philo->death_time = get_time() + philo->data->time_to_die;
     pthread_create(&death, NULL, &death_fnc, philo);
     pthread_detach(death);
     while (1)

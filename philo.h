@@ -6,7 +6,7 @@
 /*   By: mazhari <mazhari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/09 14:26:34 by mazhari           #+#    #+#             */
-/*   Updated: 2022/03/16 16:45:14 by mazhari          ###   ########.fr       */
+/*   Updated: 2022/03/18 19:41:24 by mazhari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,11 +24,10 @@ typedef struct s_philo
 {
 	pthread_t		philo;
 	pthread_mutex_t fork;
-    pthread_mutex_t eat;
+	pthread_mutex_t eat;
 	int				nbr_eat;
 	int				nbr;
 	long			death_time;
-	long			start_time;
 	struct s_data	*data;
 }				t_philo;
 
@@ -40,15 +39,17 @@ typedef struct s_data
 	int	time_to_eat;
 	int time_to_sleep;
 	int	nbr_must_eat;
+	long start_time;
 	int	death;
 	int finish_eat;
+    pthread_mutex_t print;
 }				t_data;
 
 int		ft_atoi(const char *str);
 int		data_init(t_data *data, char **av);
 void	*philosopher(void *p);
-int 	exit_program(char *str);
+int 	exit_program(t_philo  *philo);
 long	get_time();
-int		print(t_philo  philo,  char *str);
+void	print(t_philo  philo,  char *str);
 
 #endif 

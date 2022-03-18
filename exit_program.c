@@ -1,13 +1,16 @@
 #include "philo.h"
 
-int print(t_philo  philo,  char *str)
+void print(t_philo  philo,  char *str)
 {
-    printf("%ld\t%d\t%s\n", get_time() - philo.start_time, philo.nbr + 1, str);
-    return (0); 
+    long time;
+
+    time = get_time() - philo.data->start_time;
+    pthread_mutex_lock(&philo.data->print);
+    printf("%ld\t%d\t%s\n", time, philo.nbr + 1, str);
+    pthread_mutex_unlock(&philo.data->print);
 }
 
-int exit_program(char *str)
+int exit_program(t_philo  *philo)
 {
-    printf("%s", str);
-    return (1);
+    return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: mazhari <mazhari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/09 14:26:27 by mazhari           #+#    #+#             */
-/*   Updated: 2022/03/16 17:26:05 by mazhari          ###   ########.fr       */
+/*   Updated: 2022/03/18 19:47:26 by mazhari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,13 +43,13 @@ int main(int ac, char **av)
 {
     t_data data;
 
-    int i;
     if  (check_args(ac, av))
             return(1);
     if (data_init(&data, av))
             return(1); 
-    while (!data.death && data.finish_eat != data.nbr_of_philo)
+    while (1)
     {
+        if (data.finish_eat == data.nbr_of_philo || data.death)
+            return (exit_program(data.p));    
     }
-    return (0);
 }

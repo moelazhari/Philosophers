@@ -14,17 +14,21 @@ int philo_init(t_data *data)
 	int i;
     i = -1;
 
-	data->p = malloc(sizeof(data->p) * data->nbr_of_philo);
-    if (!data->p)
-    	exit_program("MALLOC ERROR");
+	
 	data->p->nbr_eat = 0;
 	while (++i < data->nbr_of_philo)
     {
-        data->p[i].data = data;
         data->p[i].nbr = i;
+        data->p[i].data = data;
         pthread_mutex_init(&data->p[i].fork, NULL);
-        //pthread_mutex_init(&data->p[i].eat, NULL);
+        pthread_mutex_init(&data->p[i].eat, NULL);
+    }
+	i = -1;
+    data->start_time = get_time();
+    while (++i < data->nbr_of_philo)
+    {
 		pthread_create(&data->p[i].philo, NULL, &philosopher, &data->p[i]);
+        usleep(100);
     }
 	i = -1;
     while (++i < data->nbr_of_philo)
@@ -46,7 +50,14 @@ int data_init(t_data *data, char **av)
 	if (av[5])
 		data->nbr_must_eat = ft_atoi(av[5]);
 	else
-		data->nbr_must_eat = -1;
+		data->nbr_must_eat = 0;
+    pthread_mutex_init(&data->print, NULL);
+    data->p = malloc(sizeof(data->p) * data->nbr_of_philo);
+    if (!data->p)
+    {
+    	printf("MALLOC ERROR");
+        return (1);
+    }
 	if (philo_init(data))
 		return (1);
 	return (0);
