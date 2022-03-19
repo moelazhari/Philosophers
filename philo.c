@@ -36,20 +36,19 @@ void taken_a_fork(t_philo *philo)
 void *death_fnc(void *p)
 {
     t_philo *philo;
+    int     time;
 
-    philo = p;
-    
+    philo = p;   
     while (1)
     {
-        pthread_mutex_lock(&philo->eat);
-        if (get_time() < philo->death_time)
-             pthread_mutex_unlock(&philo->eat);
-        else
-            break ;
+        if (get_time() >= philo->death_time)
+        {
+            pthread_mutex_lock(&philo->eat);
+            print(*philo, "is\tdeath");
+            philo->data->death = 1;
+            return (NULL);
+        }
     }
-    print(*philo, "is\tdeath");
-    philo->data->death = 1;
-    return (NULL);
 }
 
 void    *philosopher(void *p)

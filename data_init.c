@@ -1,5 +1,7 @@
 #include "philo.h"
 
+#include "philo.h"
+
 long get_time(){
 	struct timeval	time;
 
@@ -14,12 +16,11 @@ int philo_init(t_data *data)
 	int i;
     i = -1;
 
-	
-	data->p->nbr_eat = 0;
 	while (++i < data->nbr_of_philo)
     {
         data->p[i].nbr = i;
         data->p[i].data = data;
+	    data->p[i].nbr_eat = 0;
         pthread_mutex_init(&data->p[i].fork, NULL);
         pthread_mutex_init(&data->p[i].eat, NULL);
     }
@@ -28,11 +29,8 @@ int philo_init(t_data *data)
     while (++i < data->nbr_of_philo)
     {
 		pthread_create(&data->p[i].philo, NULL, &philosopher, &data->p[i]);
-        usleep(100);
+        pthread_detach(data->p[i].philo);
     }
-	i = -1;
-    while (++i < data->nbr_of_philo)
-         pthread_detach(data->p[i].philo);
 	return (0);
 }
 
