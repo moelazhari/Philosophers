@@ -1,49 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   philo.c                                            :+:      :+:    :+:   */
+/*   philo_bonus.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mazhari <mazhari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/28 20:37:47 by mazhari           #+#    #+#             */
-/*   Updated: 2022/03/29 15:57:41 by mazhari          ###   ########.fr       */
+/*   Updated: 2022/03/29 15:52:33 by mazhari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo.h"
+#include "philo_bonus.h"
 
 void	eating(t_philo *philo)
 {
-	pthread_mutex_lock(&philo->eat);
+	sem_wait(philo->eat);
 	print(*philo, "is eating");
 	philo->death_time = get_time() + philo->data->time_to_die;
-	pthread_mutex_unlock(&philo->eat);
+	sem_post(philo->eat);
 	philo->nbr_eat++;
-	if (philo->nbr_eat == philo->data->nbr_must_eat)
-		philo->data->finish_eat++;
 	usleep((philo->data->time_to_eat * 1000));
 }
 
 void	taken_a_fork(t_philo *philo)
 {
-	pthread_mutex_lock(&(philo)->fork);
+	sem_wait(philo->data->forks);
 	print(*philo, "has taken a fork");
-	if (philo->nbr == philo->data->nbr_of_philo - 1)
-	{
-		pthread_mutex_lock(&(philo - philo->nbr)->fork);
-		print(*philo, "has taken a fork");
-		eating(philo);
-		pthread_mutex_unlock(&(philo - philo->nbr)->fork);
-		pthread_mutex_unlock(&(philo)->fork);
-	}
-	else
-	{
-		pthread_mutex_lock(&(philo + 1)->fork);
-		print(*philo, "has taken a fork");
-		eating(philo);
-		pthread_mutex_unlock(&(philo + 1)->fork);
-		pthread_mutex_unlock(&(philo)->fork);
-	}
+	sem_wait(philo->data->forks);
+	print(*philo, "has taken a fork");
+	eating(philo);
+	sem_post(philo->data->forks);
+	sem_post(philo->data->forks);
 }
 
 void	*death_fnc(void *p)
@@ -56,20 +43,18 @@ void	*death_fnc(void *p)
 	{
 		if (get_time() >= philo->death_time)
 		{
-			pthread_mutex_lock(&philo->eat);
-			philo->data->death = 1;
+			sem_wait(philo->eat);
 			print(*philo, "died");
+			sem_post(philo->data->death);
 			return (NULL);
 		}
 	}
 }
 
-void	*philosopher(void *p)
+void	philosopher(t_philo *philo)
 {
-	t_philo		*philo;
 	pthread_t	death;
 
-	philo = p;
 	philo->death_time = get_time() + philo->data->time_to_die;
 	pthread_create(&death, NULL, &death_fnc, philo);
 	pthread_detach(death);
@@ -78,9 +63,8 @@ void	*philosopher(void *p)
 		print(*philo, "is thinking");
 		taken_a_fork(philo);
 		if (philo->nbr_eat == philo->data->nbr_must_eat)
-			return (NULL);
+			exit (0);
 		print(*philo, "is sleeping");
 		usleep((philo->data->time_to_sleep * 1000));
 	}
-	return (NULL);
 }

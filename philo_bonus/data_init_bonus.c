@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   data_init.c                                        :+:      :+:    :+:   */
+/*   data_init_bonus.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mazhari <mazhari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/28 20:37:29 by mazhari           #+#    #+#             */
-/*   Updated: 2022/03/29 13:41:34 by mazhari          ###   ########.fr       */
+/*   Updated: 2022/03/29 18:07:20 by mazhari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo.h"
+#include "philo_bonus.h"
 
 long	get_time(void)
 {
@@ -25,22 +25,20 @@ long	get_time(void)
 int	philo_init(t_data *data)
 {
 	int	i;
+	int	pid;
 
 	i = -1;
+	data->start_time = get_time();
 	while (++i < data->nbr_of_philo)
 	{
 		data->p[i].nbr = i;
 		data->p[i].data = data;
 		data->p[i].nbr_eat = 0;
-		pthread_mutex_init(&data->p[i].fork, NULL);
-		pthread_mutex_init(&data->p[i].eat, NULL);
-	}
-	i = -1;
-	data->start_time = get_time();
-	while (++i < data->nbr_of_philo)
-	{
-		pthread_create(&data->p[i].philo, NULL, &philosopher, &data->p[i]);
-		pthread_detach(data->p[i].philo);
+		data->p[i].eat = sem_open("/eat", O_CREAT, 0644, 1);
+		pid = fork();
+		if (pid == 0)
+			philosopher(&data->p[i]);
+		data->p[i].pid = pid;
 	}
 	return (0);
 }
@@ -48,8 +46,10 @@ int	philo_init(t_data *data)
 int	data_init(t_data *data, char **av)
 {
 	int	i;
+	int	pid;
 
 	i = -1;
+	pid = 1;
 	data->nbr_of_philo = ft_atoi(av[1]);
 	data->time_to_die = ft_atoi(av[2]);
 	data->time_to_eat = ft_atoi(av[3]);
@@ -59,14 +59,16 @@ int	data_init(t_data *data, char **av)
 	if (av[5])
 		data->nbr_must_eat = ft_atoi(av[5]);
 	else
-		data->nbr_must_eat = 0;
-	data->p = malloc(sizeof(data->p) * data->nbr_of_philo);
+		data->nbr_must_eat = -1;
+	data->p = malloc(sizeof(*data->p) * data->nbr_of_philo);
 	if (!data->p)
 	{
 		printf("MALLOC ERROR");
 		return (1);
 	}
-	pthread_mutex_init(&data->print, NULL);
+	data->forks = sem_open("/forks", O_CREAT | O_EXCL, 0644, 1);
+	data->print = sem_open("/print", O_CREAT | O_EXCL, 0644, 1);
+	data->death = sem_open("/print", O_CREAT | O_EXCL, 0644, 0);
 	philo_init(data);
 	return (0);
 }
