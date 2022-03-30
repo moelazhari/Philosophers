@@ -6,7 +6,7 @@
 /*   By: mazhari <mazhari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/09 14:26:34 by mazhari           #+#    #+#             */
-/*   Updated: 2022/03/29 15:48:53 by mazhari          ###   ########.fr       */
+/*   Updated: 2022/03/30 19:13:14 by mazhari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 # include <stdio.h>
 # include <sys/time.h>
 # include <semaphore.h>
+# include <signal.h>
 
 typedef struct s_philo
 {
@@ -31,7 +32,7 @@ typedef struct s_philo
 	struct s_data	*data;
 }				t_philo;
 
-typedef struct s_data
+typedef	struct s_data
 {
 	t_philo			*p;
 	int				nbr_of_philo;
@@ -40,7 +41,8 @@ typedef struct s_data
 	int				time_to_sleep;
 	int				nbr_must_eat;
 	long			start_time;
-	int				finish_eat;
+	sem_t			*check;
+	sem_t			*finish;
 	sem_t			*death;
 	sem_t			*forks;
 	sem_t			*print;
@@ -51,5 +53,6 @@ int		data_init(t_data *data, char **av);
 void	philosopher(t_philo *philo);
 long	get_time(void);
 void	print(t_philo philo, char *str);
+int		exit_program(t_data *data);
 
 #endif 
