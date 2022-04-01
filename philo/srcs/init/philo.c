@@ -6,7 +6,7 @@
 /*   By: mazhari <mazhari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/28 20:37:47 by mazhari           #+#    #+#             */
-/*   Updated: 2022/03/29 15:57:41 by mazhari          ###   ########.fr       */
+/*   Updated: 2022/04/01 14:50:23 by mazhari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,10 +17,10 @@ void	eating(t_philo *philo)
 	pthread_mutex_lock(&philo->eat);
 	print(*philo, "is eating");
 	philo->death_time = get_time() + philo->data->time_to_die;
-	pthread_mutex_unlock(&philo->eat);
 	philo->nbr_eat++;
 	if (philo->nbr_eat == philo->data->nbr_must_eat)
 		philo->data->finish_eat++;
+	pthread_mutex_unlock(&philo->eat);
 	usleep((philo->data->time_to_eat * 1000));
 }
 

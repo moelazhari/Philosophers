@@ -6,7 +6,7 @@
 /*   By: mazhari <mazhari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/28 20:37:47 by mazhari           #+#    #+#             */
-/*   Updated: 2022/03/30 18:37:48 by mazhari          ###   ########.fr       */
+/*   Updated: 2022/04/01 14:50:05 by mazhari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,7 @@ void	eating(t_philo *philo)
 	print(*philo, "is eating");
 	philo->death_time = get_time() + philo->data->time_to_die;
 	philo->nbr_eat++;
-	if (philo->data->nbr_must_eat > 0
-		&& philo->nbr_eat == philo->data->nbr_must_eat)
+	if (philo->nbr_eat == philo->data->nbr_must_eat)
 		sem_post(philo->data->finish);
 	sem_post(philo->eat);
 	usleep((philo->data->time_to_eat * 1000));
@@ -39,17 +38,19 @@ void	taken_a_forks(t_philo *philo)
 void	*death_fnc(void *p)
 {
 	t_philo	*philo;
-	int		time;
 	int		i;
 
 	philo = p;
+	i = -1;
 	while (1)
 	{
 		if (get_time() >= philo->death_time)
 		{
+			philo->die = 1;
 			print(*philo, "died");
 			sem_wait(philo->eat);
-			sem_post(philo->data->check);
+			while (++i < philo->data->nbr_of_philo)
+				sem_post(philo->data->finish);
 			return (0);
 		}
 	}
@@ -66,6 +67,12 @@ void	philosopher(t_philo *philo)
 	{
 		print(*philo, "is thinking");
 		taken_a_forks(philo);
+		if (philo->nbr_eat == philo->data->nbr_must_eat)
+		{
+			usleep(60000000);
+			sem_close(philo->eat);
+			
+		}
 		print(*philo, "is sleeping");
 		usleep((philo->data->time_to_sleep * 1000));
 	}

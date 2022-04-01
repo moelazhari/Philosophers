@@ -6,7 +6,7 @@
 /*   By: mazhari <mazhari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/09 14:26:27 by mazhari           #+#    #+#             */
-/*   Updated: 2022/03/28 20:56:47 by mazhari          ###   ########.fr       */
+/*   Updated: 2022/03/31 18:40:51 by mazhari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,8 @@ int	check_args(int ac, char **av)
 
 	if (ac != 6 && ac != 5)
 	{
-		printf("./philo [number_of_philosophers] [time_to_die time_to_eat] [time_to_sleep]\n");
-		printf("[number_of_times_each_philosopher_must_eat]");
+		printf("./philo [number_of_philosophers] [time_to_die time_to_eat]");
+		printf("[time_to_sleep]\n[number_of_times_each_philosopher_must_eat]");
 		printf(" (the times input in milliseconds)\n");
 		return (1);
 	}

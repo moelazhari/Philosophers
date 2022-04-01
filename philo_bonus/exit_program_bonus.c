@@ -6,7 +6,7 @@
 /*   By: mazhari <mazhari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/28 20:37:37 by mazhari           #+#    #+#             */
-/*   Updated: 2022/03/29 15:37:10 by mazhari          ###   ########.fr       */
+/*   Updated: 2022/04/01 14:42:49 by mazhari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,23 +19,30 @@ void	print(t_philo philo, char *str)
 	time = get_time() - philo.data->start_time;
 	sem_wait(philo.data->print);
 	printf("%ld\t%d\t%s\n", time, philo.nbr + 1, str);
-	sem_post(philo.data->print);
+	if (!philo.die)
+		sem_post(philo.data->print);
 }
 
-/*
+void	unlink_semaphores(void)
+{
+	sem_unlink("forks");
+	sem_unlink("eat");
+	sem_unlink("finish");
+	sem_unlink("print");
+}
+
+
 int	exit_program(t_data *data)
 {
 	int	i;
 
 	i = -1;
 	while (++i < data->nbr_of_philo)
-	{
-		pthread_mutex_destroy(&data->p[i].fork);
-		pthread_mutex_destroy(&data->p[i].eat);
-	}
-	pthread_mutex_destroy(&data->print);
-	i = -1;
+		kill(data->p[i].pid, SIGKILL);
+	sem_close(data->forks);
+	sem_close(data->print);
+	sem_close(data->finish);
+	unlink_semaphores();
 	free(data->p);
-	return (1);
+	exit(0);
 }
-*/

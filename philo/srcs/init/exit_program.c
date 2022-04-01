@@ -6,7 +6,7 @@
 /*   By: mazhari <mazhari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/28 20:37:37 by mazhari           #+#    #+#             */
-/*   Updated: 2022/03/28 21:17:35 by mazhari          ###   ########.fr       */
+/*   Updated: 2022/03/31 18:41:27 by mazhari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,8 @@ void	print(t_philo philo, char *str)
 	time = get_time() - philo.data->start_time;
 	pthread_mutex_lock(&philo.data->print);
 	printf("%ld\t%d\t%s\n", time, philo.nbr + 1, str);
-	if (!philo.data->death && philo.data->finish_eat != philo.data->nbr_of_philo)
+	if (!philo.data->death
+		&& philo.data->finish_eat != philo.data->nbr_of_philo)
 		pthread_mutex_unlock(&philo.data->print);
 }
 

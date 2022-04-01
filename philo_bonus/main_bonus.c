@@ -6,7 +6,7 @@
 /*   By: mazhari <mazhari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/09 14:26:27 by mazhari           #+#    #+#             */
-/*   Updated: 2022/03/30 19:13:21 by mazhari          ###   ########.fr       */
+/*   Updated: 2022/04/01 14:40:17 by mazhari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,8 @@ int	check_args(int ac, char **av)
 
 	if (ac != 6 && ac != 5)
 	{
-		printf("./philo [number_of_philosophers] [time_to_die time_to_eat] [time_to_sleep]\n");
-		printf("[number_of_times_each_philosopher_must_eat]");
+		printf("./philo [number_of_philosophers] [time_to_die time_to_eat]");
+		printf("[time_to_sleep]\n[number_of_times_each_philosopher_must_eat]");
 		printf(" (the times input in milliseconds)\n");
 		return (1);
 	}
@@ -40,44 +40,18 @@ int	check_args(int ac, char **av)
 	return (0);
 }
 
-int	exit_program(t_data *data)
-{
-	int	i;
-
-	i = -1;
-	while (++i < data->nbr_of_philo)
-		kill(data->p[i].pid, SIGKILL);
-	sem_close(data->forks);
-	sem_close(data->check);
-	sem_close(data->print);
-	sem_close(data->finish);
-	sem_unlink("forks");
-	sem_unlink("finish");
-	sem_unlink("check");
-	sem_unlink("print");
-	sem_unlink("eat");
-	free(data->p);
-	exit(0);
-}
-
-void	unlink_semaphores(void)
-{
-	sem_unlink("eat");
-	sem_unlink("forks");
-	sem_unlink("finish");
-	sem_unlink("check");
-	sem_unlink("print");
-}
-
 int	main(int ac, char **av)
 {
+	int		i;
 	t_data	data;
 
+	i = -1;
 	if (check_args(ac, av))
 		return (1);
 	unlink_semaphores();
 	if (data_init(&data, av))
 		return (1);
-	sem_wait(data.check);
+	while (++i < data.nbr_of_philo)
+		sem_wait(data.finish);
 	return (exit_program(&data));
 }
