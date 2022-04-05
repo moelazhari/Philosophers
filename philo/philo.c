@@ -6,7 +6,7 @@
 /*   By: mazhari <mazhari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/28 20:37:47 by mazhari           #+#    #+#             */
-/*   Updated: 2022/04/01 14:50:23 by mazhari          ###   ########.fr       */
+/*   Updated: 2022/04/05 19:58:46 by mazhari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,12 +49,11 @@ void	taken_a_fork(t_philo *philo)
 void	*death_fnc(void *p)
 {
 	t_philo	*philo;
-	int		time;
 
 	philo = p;
 	while (1)
 	{
-		if (get_time() >= philo->death_time)
+		if (get_time() > philo->death_time)
 		{
 			pthread_mutex_lock(&philo->eat);
 			philo->data->death = 1;
@@ -77,8 +76,6 @@ void	*philosopher(void *p)
 	{
 		print(*philo, "is thinking");
 		taken_a_fork(philo);
-		if (philo->nbr_eat == philo->data->nbr_must_eat)
-			return (NULL);
 		print(*philo, "is sleeping");
 		usleep((philo->data->time_to_sleep * 1000));
 	}

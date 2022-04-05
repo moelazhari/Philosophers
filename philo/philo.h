@@ -6,7 +6,7 @@
 /*   By: mazhari <mazhari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/09 14:26:34 by mazhari           #+#    #+#             */
-/*   Updated: 2022/04/01 16:06:59 by mazhari          ###   ########.fr       */
+/*   Updated: 2022/04/05 20:05:47 by mazhari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,11 +45,11 @@ typedef struct s_data
 	pthread_mutex_t	print;
 }				t_data;
 
-int		ft_atoi(const char *str);
-int		data_init(t_data *data, char **av);
-void	*philosopher(void *p);
-int		exit_program(t_data *data);
+int			ft_atoi(const char *str);
+int			data_init(t_data *data, char **av);
+void		*philosopher(void *p);
+int			exit_program(t_data *data);
 long long	get_time(void);
-void	print(t_philo philo, char *str);
+void		print(t_philo philo, char *str);
 
 #endif 

@@ -6,7 +6,7 @@
 /*   By: mazhari <mazhari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/28 20:37:29 by mazhari           #+#    #+#             */
-/*   Updated: 2022/04/01 16:00:07 by mazhari          ###   ########.fr       */
+/*   Updated: 2022/04/05 18:34:38 by mazhari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ int	philo_init(t_data *data)
 	{
 		pthread_create(&data->p[i].philo, NULL, &philosopher, &data->p[i]);
 		pthread_detach(data->p[i].philo);
+		usleep(100);
 	}
 	return (0);
 }
@@ -50,7 +51,7 @@ int	data_init(t_data *data, char **av)
 		data->nbr_must_eat = ft_atoi(av[5]);
 	else
 		data->nbr_must_eat = 0;
-	data->p = malloc(sizeof(*data->p) * data->nbr_of_philo);
+	data->p = malloc(sizeof(t_philo) * data->nbr_of_philo);
 	if (!data->p)
 	{
 		printf("MALLOC ERROR");

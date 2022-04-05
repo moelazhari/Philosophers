@@ -1,16 +1,53 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exit_program_bonus.c                               :+:      :+:    :+:   */
+/*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mazhari <mazhari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/28 20:37:37 by mazhari           #+#    #+#             */
-/*   Updated: 2022/04/01 14:42:49 by mazhari          ###   ########.fr       */
+/*   Updated: 2022/04/05 19:54:00 by mazhari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo_bonus.h"
+
+int	ft_atoi(const char *str)
+{
+	int	rus;
+	int	vul;
+	int	i;
+
+	i = 0;
+	vul = 1;
+	rus = 0;
+	while ((str[i] == ' ' || str[i] == '\f')
+		|| (str[i] == '\n' || str[i] == '\r')
+		|| (str[i] == '\t' || str[i] == '\v'))
+		i++;
+	if (str[i] == '+' || str[i] == '-')
+	{
+		if (str[i] == '-')
+			vul *= -1;
+		i++;
+	}
+	while (str[i] >= '0' && str[i] <= '9')
+	{
+		rus = (rus * 10) + ((int)str[i] - '0');
+		i++;
+	}	
+	return (vul * rus);
+}
+
+long	get_time(void)
+{
+	struct timeval	time;
+
+	gettimeofday(&time, NULL);
+	time.tv_sec = time.tv_sec * 1000;
+	time.tv_usec = time.tv_usec / 1000;
+	return (time.tv_sec + time.tv_usec);
+}
 
 void	print(t_philo philo, char *str)
 {
@@ -30,7 +67,6 @@ void	unlink_semaphores(void)
 	sem_unlink("finish");
 	sem_unlink("print");
 }
-
 
 int	exit_program(t_data *data)
 {

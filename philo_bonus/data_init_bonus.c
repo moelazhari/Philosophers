@@ -6,27 +6,16 @@
 /*   By: mazhari <mazhari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/28 20:37:29 by mazhari           #+#    #+#             */
-/*   Updated: 2022/04/01 14:48:50 by mazhari          ###   ########.fr       */
+/*   Updated: 2022/04/05 20:02:54 by mazhari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo_bonus.h"
 
-long	get_time(void)
-{
-	struct timeval	time;
-
-	gettimeofday(&time, NULL);
-	time.tv_sec = time.tv_sec * 1000;
-	time.tv_usec = time.tv_usec / 1000;
-	return (time.tv_sec + time.tv_usec);
-}
-
 int	philo_init(t_data *data)
 {
 	int			i;
 	int			pid;
-	pthread_t	eat;
 
 	i = -1;
 	data->start_time = get_time();
@@ -67,7 +56,7 @@ int	data_init(t_data *data, char **av)
 		data->nbr_must_eat = ft_atoi(av[5]);
 	else
 		data->nbr_must_eat = 0;
-	data->p = malloc(sizeof(*data->p) * data->nbr_of_philo);
+	data->p = malloc(sizeof(t_philo) * data->nbr_of_philo);
 	if (!data->p)
 	{
 		printf("MALLOC ERROR");
