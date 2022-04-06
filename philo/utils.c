@@ -6,11 +6,24 @@
 /*   By: mazhari <mazhari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/28 20:37:37 by mazhari           #+#    #+#             */
-/*   Updated: 2022/04/05 22:25:42 by mazhari          ###   ########.fr       */
+/*   Updated: 2022/04/06 06:23:07 by mazhari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
+
+void ft_usleep(long long	time)
+{
+	long long	start;
+	
+	start =	get_time();
+	while (1)
+	{
+		usleep(100);
+		if (start + time == get_time())
+			break ;
+	}
+}
 
 int	ft_atoi(const char *str)
 {

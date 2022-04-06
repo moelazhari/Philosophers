@@ -6,7 +6,7 @@
 /*   By: mazhari <mazhari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/28 20:37:29 by mazhari           #+#    #+#             */
-/*   Updated: 2022/04/06 02:43:52 by mazhari          ###   ########.fr       */
+/*   Updated: 2022/04/06 04:57:39 by mazhari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,6 @@ int	philo_init(t_data *data)
 	{
 		pthread_create(&data->p[i].philo, NULL, &philosopher, &data->p[i]);
 		pthread_detach(data->p[i].philo);
-		usleep(100);
 	}
 	return (0);
 }

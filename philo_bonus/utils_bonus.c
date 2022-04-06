@@ -6,7 +6,7 @@
 /*   By: mazhari <mazhari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/28 20:37:37 by mazhari           #+#    #+#             */
-/*   Updated: 2022/04/06 02:38:24 by mazhari          ###   ########.fr       */
+/*   Updated: 2022/04/06 06:48:49 by mazhari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,16 +37,6 @@ int	ft_atoi(const char *str)
 		i++;
 	}	
 	return (vul * rus);
-}
-
-long	get_time(void)
-{
-	struct timeval	time;
-
-	gettimeofday(&time, NULL);
-	time.tv_sec = time.tv_sec * 1000;
-	time.tv_usec = time.tv_usec / 1000;
-	return (time.tv_sec + time.tv_usec);
 }
 
 void	print(t_philo philo, char *str)

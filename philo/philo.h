@@ -6,7 +6,7 @@
 /*   By: mazhari <mazhari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/09 14:26:34 by mazhari           #+#    #+#             */
-/*   Updated: 2022/04/05 22:20:01 by mazhari          ###   ########.fr       */
+/*   Updated: 2022/04/06 05:22:28 by mazhari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@ int			data_init(t_data *data, char **av);
 void		*philosopher(void *p);
 int			exit_program(t_data *data);
 long long	get_time(void);
+void		ft_usleep(long long	time);
 void		print(t_philo philo, char *str);
 
 #endif 
