@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils.c                                            :+:      :+:    :+:   */
+/*   utils_bonus.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mazhari <mazhari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/28 20:37:37 by mazhari           #+#    #+#             */
-/*   Updated: 2022/04/05 19:54:00 by mazhari          ###   ########.fr       */
+/*   Updated: 2022/04/06 02:38:24 by mazhari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,10 @@ int	exit_program(t_data *data)
 
 	i = -1;
 	while (++i < data->nbr_of_philo)
+	{
 		kill(data->p[i].pid, SIGKILL);
+		sem_close(data->p[i].eat);
+	}
 	sem_close(data->forks);
 	sem_close(data->print);
 	sem_close(data->finish);

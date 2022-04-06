@@ -6,7 +6,7 @@
 #    By: mazhari <mazhari@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/04/05 19:50:01 by mazhari           #+#    #+#              #
-#    Updated: 2022/04/05 19:59:23 by mazhari          ###   ########.fr        #
+#    Updated: 2022/04/06 02:59:37 by mazhari          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -46,12 +46,12 @@ bonus: $(OBJS_BONUS) $(HEADER_BONUS)
 	$(CC) $(CFLAGS) $(OBJS_BONUS) -o $(NAME_BONUS)
 
 clean:
-	$(RM) $(OBJS)
-	$(RM) $(OBJS_BONUS)
+	rm -f $(OBJS)
+	rm -f $(OBJS_BONUS)
 
 fclean: clean
-	@$(RM) $(NAME)
-	@$(RM) $(NAME_BONUS)
+	rm -f $(NAME)
+	rm -f $(NAME_BONUS)
 
 re: fclean all
 

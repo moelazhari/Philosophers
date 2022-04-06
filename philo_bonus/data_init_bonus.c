@@ -6,7 +6,7 @@
 /*   By: mazhari <mazhari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/28 20:37:29 by mazhari           #+#    #+#             */
-/*   Updated: 2022/04/05 20:02:54 by mazhari          ###   ########.fr       */
+/*   Updated: 2022/04/05 22:50:19 by mazhari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ int	philo_init(t_data *data)
 		data->p[i].data = data;
 		data->p[i].nbr_eat = 0;
 		data->p[i].die = 0;
-		data->p[i].eat = sem_open("eat", O_CREAT, 0644, 1);
+		data->p[i].eat = sem_open("eat", O_CREAT, 644, 1);
 		pid = fork();
 		if (pid == 0)
 			philosopher(&data->p[i]);
@@ -36,9 +36,9 @@ int	philo_init(t_data *data)
 
 void	semaphores_init(t_data *data)
 {
-	data->forks = sem_open("forks", O_CREAT, 777, data->nbr_of_philo);
-	data->print = sem_open("print", O_CREAT, 777, 1);
-	data->finish = sem_open("finish", O_CREAT, 777, 0);
+	data->forks = sem_open("forks", O_CREAT, 644, data->nbr_of_philo);
+	data->print = sem_open("print", O_CREAT, 644, 1);
+	data->finish = sem_open("finish", O_CREAT, 644, 0);
 }
 
 int	data_init(t_data *data, char **av)

@@ -6,7 +6,7 @@
 /*   By: mazhari <mazhari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/28 20:37:47 by mazhari           #+#    #+#             */
-/*   Updated: 2022/04/05 16:39:47 by mazhari          ###   ########.fr       */
+/*   Updated: 2022/04/06 03:42:18 by mazhari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,14 @@
 
 void	eating(t_philo *philo)
 {
-	sem_wait(philo->eat);
 	print(*philo, "is eating");
-	philo->death_time = get_time() + philo->data->time_to_die;
+	usleep((philo->data->time_to_eat * 1000));
 	philo->nbr_eat++;
 	if (philo->nbr_eat == philo->data->nbr_must_eat)
 		sem_post(philo->data->finish);
+	sem_wait(philo->eat);
+	philo->death_time = get_time() + philo->data->time_to_die;
 	sem_post(philo->eat);
-	usleep((philo->data->time_to_eat * 1000));
 }
 
 void	taken_a_forks(t_philo *philo)
