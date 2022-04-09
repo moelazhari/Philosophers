@@ -1,27 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils.c                                            :+:      :+:    :+:   */
+/*   utils_bonus.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mazhari <mazhari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/28 20:37:37 by mazhari           #+#    #+#             */
-/*   Updated: 2022/04/06 06:23:07 by mazhari          ###   ########.fr       */
+/*   Updated: 2022/04/09 22:33:41 by mazhari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo.h"
+#include "philo_bonus.h"
 
-void ft_usleep(long long	time)
+void	ft_usleep(unsigned long time, unsigned long start) // usleep(time * 100 * 0.95) while (time)
 {
-	long long	start;
-	
-	start =	get_time();
-	while (1)
+	usleep(time * 1000 * 0.90);
+	while (get_time() - start < time)
 	{
 		usleep(100);
-		if (start + time == get_time())
-			break ;
 	}
 }
 
@@ -52,25 +48,23 @@ int	ft_atoi(const char *str)
 	return (vul * rus);
 }
 
-long long	get_time(void)
-{
-	struct timeval	time;
-
-	gettimeofday(&time, NULL);
-	time.tv_sec = time.tv_sec * 1000;
-	time.tv_usec = time.tv_usec / 1000;
-	return (time.tv_sec + time.tv_usec);
-}
-
 void	print(t_philo philo, char *str)
 {
 	long	time;
 
 	time = get_time() - philo.data->start_time;
-	pthread_mutex_lock(&philo.data->print);
+	sem_wait(philo.data->print);
 	printf("%ld\t%d\t%s\n", time, philo.nbr + 1, str);
-	if (!philo.data->death)
-		pthread_mutex_unlock(&philo.data->print);
+	if (!philo.die)
+		sem_post(philo.data->print);
+}
+
+void	unlink_semaphores(void)
+{
+	sem_unlink("forks");
+	sem_unlink("eat");
+	sem_unlink("finish");
+	sem_unlink("print");
 }
 
 int	exit_program(t_data *data)
@@ -79,12 +73,11 @@ int	exit_program(t_data *data)
 
 	i = -1;
 	while (++i < data->nbr_of_philo)
-	{
-		pthread_mutex_destroy(&data->p[i].fork);
-		pthread_mutex_destroy(&data->p[i].eat);
-	}
-	pthread_mutex_destroy(&data->print);
-	i = -1;
+		kill(data->p[i].pid, SIGKILL);
+	sem_close(data->p->eat);
+	sem_close(data->forks);
+	sem_close(data->print);
+	sem_close(data->finish);
 	free(data->p);
-	return (0);
+	exit(0);
 }

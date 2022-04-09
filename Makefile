@@ -6,55 +6,58 @@
 #    By: mazhari <mazhari@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/04/05 19:50:01 by mazhari           #+#    #+#              #
-#    Updated: 2022/04/06 02:59:37 by mazhari          ###   ########.fr        #
+#    Updated: 2022/04/07 18:16:19 by mazhari          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
-
-NAME= ./philo/philo
-NAME_BONUS= ./philo_bonus/philo_bonus
-
-HEADER= ./philo/philo.h
-
-HEADER_BONUS= ./philo_bonus/philo_bonus.h
 
 CC= gcc
 CFLAGS = -Wall -Werror -Wextra
 
-SRCS = 	./philo/main.c \
-		./philo/data_init.c \
-		./philo/philo.c \
-		./philo/utils.c \
+NAME= ./philo/philo
+NAME_B= ./philo_bonus/philo_bonus
 
-OBJS = $(SRCS:.c=.o)
-	
-SRCS_BONUS = 	./philo_bonus/main_bonus.c \
-				./philo_bonus/data_init_bonus.c \
-				./philo_bonus/philo_bonus.c \
-				./philo_bonus/utils_bonus.c \
+INCLUDES= ./philo/includes
+INCLUDES_B= ./philo_bonus/includes
 
-OBJS_BONUS = $(SRCS_BONUS:.c=.o)
+HEDEAR= $(INCLUDES)/philo.h
+HEDEAR_B= $(INCLUDES_B)/philo_bonus.h
+
+ACTION= $(addprefix src/, $(addprefix actions/, philo))
+INIT= $(addprefix src/, $(addprefix init/, data_init))
+UTILS= $(addprefix src/, $(addprefix utils/, utils))
+
+FILES= $(addprefix philo/, src/main $(ACTION) $(INIT) $(UTILS))
+FILES_B= $(addprefix philo_bonus/, src/main $(ACTION) $(INIT) $(UTILS))
+
+OBJS= $(FILES:=.o)
+OBJS_B= $(FILES_B:=_bonus.o)
 
 all: $(NAME)
-	
-%.o: %.c $(HEADER) $(HEADER_BONUS)
-	$(CC) $(CFLAGS) -o $@ -c $<
 
-$(NAME): $(OBJS) $(HEADER)
+bonus: $(NAME_B)
+
+%_bonus.o: %_bonus.c $(HEDEAR_B)
+	$(CC) -I$(INCLUDES_B) $(CFLAGS) -c $< -o $@
+
+%.o: %.c $(HEDEAR)
+	$(CC) -I$(INCLUDES) $(CFLAGS) -c $< -o $@
+
+$(NAME): $(OBJS) $(HEDEAR)
 	$(CC) $(CFLAGS) $(OBJS) -o $(NAME)
 
-bonus: $(OBJS_BONUS) $(HEADER_BONUS)
-	$(CC) $(CFLAGS) $(OBJS_BONUS) -o $(NAME_BONUS)
+$(NAME_B): $(OBJS_B) $(HEDEAR_B)
+	$(CC) $(CFLAGS) $(OBJS_B) -o $(NAME_B)
 
 clean:
 	rm -f $(OBJS)
-	rm -f $(OBJS_BONUS)
+	rm -f $(OBJS_B)
 
 fclean: clean
 	rm -f $(NAME)
-	rm -f $(NAME_BONUS)
+	rm -f $(NAME_B)
 
 re: fclean all
 
 rebonus: fclean bonus
 
-.PHONY: all clean fclean re rebonus
+.PHONY: all bonus clean f re rebonus

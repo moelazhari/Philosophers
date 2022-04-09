@@ -6,7 +6,7 @@
 /*   By: mazhari <mazhari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/09 14:26:34 by mazhari           #+#    #+#             */
-/*   Updated: 2022/04/06 05:22:28 by mazhari          ###   ########.fr       */
+/*   Updated: 2022/04/09 21:57:38 by mazhari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,9 +27,9 @@ typedef struct s_philo
 	pthread_mutex_t	eat;
 	int				nbr_eat;
 	int				nbr;
-	long long		death_time;
+	unsigned long	death_time;
 	struct s_data	*data;
-}				t_philo;
+}					t_philo;
 
 typedef struct s_data
 {
@@ -39,18 +39,18 @@ typedef struct s_data
 	int				time_to_eat;
 	int				time_to_sleep;
 	int				nbr_must_eat;
-	long long		start_time;
+	unsigned long	start_time;
 	int				death;
 	int				finish_eat;
 	pthread_mutex_t	print;
 }				t_data;
 
-int			ft_atoi(const char *str);
-int			data_init(t_data *data, char **av);
-void		*philosopher(void *p);
-int			exit_program(t_data *data);
-long long	get_time(void);
-void		ft_usleep(long long	time);
-void		print(t_philo philo, char *str);
+int				ft_atoi(const char *str);
+int				data_init(t_data *data, char **av);
+void			*philosopher(void *p);
+int				exit_program(t_data *data);
+unsigned long	get_time(void);
+void			ft_usleep(unsigned long time, unsigned long start);
+void			print(t_philo philo, char *str);
 
 #endif 
