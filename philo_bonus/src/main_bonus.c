@@ -6,7 +6,7 @@
 /*   By: mazhari <mazhari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/09 14:26:27 by mazhari           #+#    #+#             */
-/*   Updated: 2022/04/09 21:15:30 by mazhari          ###   ########.fr       */
+/*   Updated: 2022/04/10 22:15:04 by mazhari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,9 +52,6 @@ int	main(int ac, char **av)
 	if (data_init(&data, av))
 		return (1);
 	while (++i < data.nbr_of_philo)
-	{
-			sem_wait(data.finish);
-			//usleep(200);
-	}
+		sem_wait(data.finish);
 	return (exit_program(&data));
 }

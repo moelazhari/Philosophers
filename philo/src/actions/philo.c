@@ -6,7 +6,7 @@
 /*   By: mazhari <mazhari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/28 20:37:47 by mazhari           #+#    #+#             */
-/*   Updated: 2022/04/09 22:12:43 by mazhari          ###   ########.fr       */
+/*   Updated: 2022/04/10 20:32:56 by mazhari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,12 +15,12 @@
 void	eating(t_philo *philo)
 {
 	pthread_mutex_lock(&philo->eat);
+	print(*philo, "is eating");
 	philo->death_time = get_time() + philo->data->time_to_die;
-	pthread_mutex_unlock(&philo->eat);
 	philo->nbr_eat++;
 	if (philo->nbr_eat == philo->data->nbr_must_eat)
 		philo->data->finish_eat++;
-	print(*philo, "is eating");
+	pthread_mutex_unlock(&philo->eat);
 	ft_usleep(philo->data->time_to_eat, get_time());
 }
 
@@ -40,34 +40,12 @@ void	taken_a_fork(t_philo *philo)
 	pthread_mutex_unlock(&philo[right_fork].fork);
 }
 
-void	*death_fnc(void *p)
-{
-	t_philo	*philo;
-
-	philo = p;
-	while (1)
-	{
-		pthread_mutex_lock(&philo->eat);
-		if (get_time() >= philo->death_time)
-		{
-			print(*philo, "died");
-			philo->data->death = 1;
-			return (NULL);
-		}
-		else
-			pthread_mutex_unlock(&philo->eat);
-		usleep(100);
-	}
-}
-
 void	*philosopher(void *p)
 {
 	t_philo		*philo;
-	pthread_t	death;
 
 	philo = p;
 	philo->death_time = philo->data->start_time + philo->data->time_to_die;
-	pthread_create(&death, NULL, &death_fnc, philo);
 	while (1)
 	{
 		taken_a_fork(philo);
@@ -76,7 +54,7 @@ void	*philosopher(void *p)
 		print(*philo, "is sleeping");
 		ft_usleep(philo->data->time_to_sleep, get_time());
 		print(*philo, "is thinking");
-		usleep(100);
+		usleep(50);
 	}
 	return (NULL);
 }

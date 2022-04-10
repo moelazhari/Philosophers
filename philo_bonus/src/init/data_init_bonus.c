@@ -6,7 +6,7 @@
 /*   By: mazhari <mazhari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/28 20:37:29 by mazhari           #+#    #+#             */
-/*   Updated: 2022/04/09 21:19:10 by mazhari          ###   ########.fr       */
+/*   Updated: 2022/04/10 22:02:57 by mazhari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,12 +35,11 @@ int	philo_init(t_data *data)
 		data->p[i].data = data;
 		data->p[i].nbr_eat = 0;
 		data->p[i].die = 0;
-		data->p[i].eat = sem_open("eat", O_CREAT, 644, 1);
+		data->p[i].eat = sem_open("eat", O_CREAT, 0644, 1);
 		pid = fork();
 		if (pid == 0)
 			philosopher(&data->p[i]);
 		data->p[i].pid = pid;
-		//usleep(100);
 	}
 	return (0);
 }

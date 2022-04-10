@@ -6,12 +6,12 @@
 #    By: mazhari <mazhari@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/04/05 19:50:01 by mazhari           #+#    #+#              #
-#    Updated: 2022/04/07 18:16:19 by mazhari          ###   ########.fr        #
+#    Updated: 2022/04/10 20:10:39 by mazhari          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 CC= gcc
-CFLAGS = -Wall -Werror -Wextra
+CFLAGS = -Wall -Werror -Wextra -g
 
 NAME= ./philo/philo
 NAME_B= ./philo_bonus/philo_bonus

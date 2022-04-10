@@ -6,19 +6,17 @@
 /*   By: mazhari <mazhari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/28 20:37:37 by mazhari           #+#    #+#             */
-/*   Updated: 2022/04/09 22:33:41 by mazhari          ###   ########.fr       */
+/*   Updated: 2022/04/10 22:15:50 by mazhari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo_bonus.h"
 
-void	ft_usleep(unsigned long time, unsigned long start) // usleep(time * 100 * 0.95) while (time)
+void	ft_usleep(unsigned long time, unsigned long start)
 {
 	usleep(time * 1000 * 0.90);
 	while (get_time() - start < time)
-	{
 		usleep(100);
-	}
 }
 
 int	ft_atoi(const char *str)
@@ -74,10 +72,10 @@ int	exit_program(t_data *data)
 	i = -1;
 	while (++i < data->nbr_of_philo)
 		kill(data->p[i].pid, SIGKILL);
-	sem_close(data->p->eat);
 	sem_close(data->forks);
-	sem_close(data->print);
+	sem_close(data->p->eat);
 	sem_close(data->finish);
+	sem_close(data->print);
 	free(data->p);
-	exit(0);
+	return (0);
 }
