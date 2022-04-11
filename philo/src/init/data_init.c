@@ -6,49 +6,20 @@
 /*   By: mazhari <mazhari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/28 20:37:29 by mazhari           #+#    #+#             */
-/*   Updated: 2022/04/10 21:53:36 by mazhari          ###   ########.fr       */
+/*   Updated: 2022/04/10 23:34:44 by mazhari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void	*death_fnc(void *info)
-{
-	t_data	*data;
-	int		i;
-
-	data = info;
-	i = -1;
-	while (!data->death)
-	{
-		while (++i < data->nbr_of_philo && !data->death)
-		{
-			if (data->p[i].nbr_eat == data->nbr_must_eat)
-				break ;
-			pthread_mutex_lock(&data->p[i].eat);
-			if (get_time() >= data->p[i].death_time)
-			{
-				print(data->p[i], "died");
-				data->death = 1;
-			}
-			else
-				pthread_mutex_unlock(&data->p[i].eat);
-		}
-		i = -1;
-		usleep(50);
-	}
-	return (NULL);
-}
-
 int	philo_init(t_data *data)
 {
-	pthread_t	death;
 	int			i;
 
 	i = -1;
 	while (++i < data->nbr_of_philo)
 	{
-		pthread_mutex_init(&data->p[i].fork, NULL);
+		pthread_mutex_init(&data->p[i].leftfork, NULL);
 		pthread_mutex_init(&data->p[i].eat, NULL);
 	}
 	i = -1;
@@ -58,10 +29,13 @@ int	philo_init(t_data *data)
 		data->p[i].nbr = i;
 		data->p[i].data = data;
 		data->p[i].nbr_eat = 0;
+		if (i == data->nbr_of_philo - 1)
+			data->p[i].rightfork = &data->p[0].leftfork;
+		else
+			data->p[i].rightfork = &data->p[i + 1].leftfork;
 		pthread_create(&data->p[i].philo, NULL, &philosopher, &data->p[i]);
 		pthread_detach(data->p[i].philo);
 	}
-	pthread_create(&death, NULL, &death_fnc, data);
 	return (0);
 }
 

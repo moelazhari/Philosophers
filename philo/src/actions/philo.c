@@ -6,7 +6,7 @@
 /*   By: mazhari <mazhari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/28 20:37:47 by mazhari           #+#    #+#             */
-/*   Updated: 2022/04/10 20:32:56 by mazhari          ###   ########.fr       */
+/*   Updated: 2022/04/10 23:51:21 by mazhari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,18 +26,13 @@ void	eating(t_philo *philo)
 
 void	taken_a_fork(t_philo *philo)
 {
-	int	left_fork;
-	int	right_fork;
-
-	left_fork = philo->nbr;
-	right_fork = (philo->nbr + 1) % philo->data->nbr_of_philo;
-	pthread_mutex_lock(&philo[left_fork].fork);
+	pthread_mutex_lock(&philo->leftfork);
 	print(*philo, "has taken a fork");
-	pthread_mutex_lock(&philo[right_fork].fork);
+	pthread_mutex_lock(philo->rightfork);
 	print(*philo, "has taken a fork");
 	eating(philo);
-	pthread_mutex_unlock(&philo[left_fork].fork);
-	pthread_mutex_unlock(&philo[right_fork].fork);
+	pthread_mutex_unlock(&philo->leftfork);
+	pthread_mutex_unlock(philo->rightfork);
 }
 
 void	*philosopher(void *p)
@@ -46,15 +41,15 @@ void	*philosopher(void *p)
 
 	philo = p;
 	philo->death_time = philo->data->start_time + philo->data->time_to_die;
+	if (philo->nbr % 2 != 0)
+		usleep(100);
 	while (1)
 	{
 		taken_a_fork(philo);
-		if (philo->nbr_eat == philo->data->nbr_must_eat)
-			break ;
 		print(*philo, "is sleeping");
 		ft_usleep(philo->data->time_to_sleep, get_time());
 		print(*philo, "is thinking");
-		usleep(50);
+		usleep(100);
 	}
-	return (NULL);
+	return (0);
 }

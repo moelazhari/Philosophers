@@ -6,11 +6,36 @@
 /*   By: mazhari <mazhari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/09 14:26:27 by mazhari           #+#    #+#             */
-/*   Updated: 2022/04/10 20:35:36 by mazhari          ###   ########.fr       */
+/*   Updated: 2022/04/11 02:49:02 by mazhari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
+
+int	death_fnc(t_data *data)
+{
+	int		i;
+
+	i = -1;
+	while (++i < data->nbr_of_philo)
+	{
+		if (data->finish_eat == data->nbr_of_philo)
+			break ;
+		pthread_mutex_lock(&data->p[i].eat);
+		if (get_time() >= data->p[i].death_time)
+		{
+			data->death = 1;
+			print(data->p[i], "died");
+			break ;
+		}
+		else
+			pthread_mutex_unlock(&data->p[i].eat);
+		if (i == data->nbr_of_philo -1)
+			i = -1;
+		usleep(100);
+	}
+	return (exit_program(data));
+}
 
 int	check_args(int ac, char **av)
 {
@@ -48,9 +73,5 @@ int	main(int ac, char **av)
 		return (1);
 	if (data_init(&data, av))
 		return (1);
-	while (1)
-	{
-		if (data.finish_eat == data.nbr_of_philo || data.death)
-			return (exit_program(&data));
-	}
+	return (death_fnc(&data));
 }

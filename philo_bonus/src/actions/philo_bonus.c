@@ -6,7 +6,7 @@
 /*   By: mazhari <mazhari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/28 20:37:47 by mazhari           #+#    #+#             */
-/*   Updated: 2022/04/10 22:16:18 by mazhari          ###   ########.fr       */
+/*   Updated: 2022/04/11 02:50:16 by mazhari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,8 @@ void	philosopher(t_philo *philo)
 	philo->death_time = philo->data->start_time + philo->data->time_to_die;
 	pthread_create(&death, NULL, &death_fnc, philo);
 	pthread_detach(death);
+	if (philo->nbr % 2 != 0)
+		usleep(100);
 	while (1)
 	{
 		taken_a_forks(philo);

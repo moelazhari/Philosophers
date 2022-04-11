@@ -6,7 +6,7 @@
 /*   By: mazhari <mazhari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/09 14:26:34 by mazhari           #+#    #+#             */
-/*   Updated: 2022/04/10 03:14:55 by mazhari          ###   ########.fr       */
+/*   Updated: 2022/04/10 23:19:23 by mazhari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,8 @@
 typedef struct s_philo
 {
 	pthread_t		philo;
-	pthread_mutex_t	fork;
+	pthread_mutex_t	leftfork;
+	pthread_mutex_t	*rightfork;
 	pthread_mutex_t	eat;
 	int				nbr_eat;
 	int				nbr;

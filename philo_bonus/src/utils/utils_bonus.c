@@ -6,7 +6,7 @@
 /*   By: mazhari <mazhari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/28 20:37:37 by mazhari           #+#    #+#             */
-/*   Updated: 2022/04/10 22:15:50 by mazhari          ###   ########.fr       */
+/*   Updated: 2022/04/11 02:32:54 by mazhari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	ft_usleep(unsigned long time, unsigned long start)
 {
-	usleep(time * 1000 * 0.90);
+	usleep(time * 1000 * 0.95);
 	while (get_time() - start < time)
 		usleep(100);
 }
